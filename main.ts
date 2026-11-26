@@ -16,10 +16,19 @@ const LINE =
 
 // The sealed scorer only accepts 1–200 UTF-8 characters, not only whitespace:
 // fail loudly here instead of writing an entry the judge would never see.
-// The line below is 121 characters, well inside the gate.
-if (LINE.length < 1 || LINE.length > 200 || LINE.trim().length === 0) {
-  throw new Error(`entry line must be 1-200 characters, got ${LINE.length}`);
+function checkLengthGuard(line: string): void {
+  if (line.length < 1 || line.length > 200 || line.trim().length === 0) {
+    throw new Error(`entry line must be 1-200 characters, got ${line.length}`);
+  }
 }
+
+// Why this diagnosis fits the brief: a flat clinical voice ("Diagnosis:
+// chronic prompt-dependency") delivers the joke straight, and the line
+// closes on a recursive twist — asking a language model how to feel about
+// asking a language model how to feel — so the punchline lands on the
+// loop itself rather than on a setup. The line below is 121 characters,
+// well inside the gate.
+checkLengthGuard(LINE);
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 mkdirSync(outDir, { recursive: true });
